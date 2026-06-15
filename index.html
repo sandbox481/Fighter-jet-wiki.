@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>American Fighter Jet Wiki</title>
+<style>
+body{margin:0;background:#001f4d;font-family:Arial,sans-serif}
+header{background:#001230;color:white;padding:18px;text-align:center;border-bottom:3px solid #4a90e2}
+#search{width:min(700px,90%);padding:12px;border-radius:8px;border:none}
+.layout{display:flex;height:calc(100vh - 110px)}
+.sidebar{width:300px;background:#002b66;overflow:auto;padding:10px}
+.jet{display:block;width:100%;padding:12px;margin:4px 0;border:none;border-radius:8px;text-align:left;cursor:pointer}
+.jet:hover{transform:translateX(3px)}
+.main{flex:1;overflow:auto;padding:20px}
+.card{background:white;border-radius:16px;padding:25px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.hero{width:100%;max-height:420px;object-fit:cover;border-radius:12px;background:#ddd}
+.info{display:flex;gap:20px;flex-wrap:wrap;margin:15px 0}
+.fact{background:#eef4ff;padding:10px;border-radius:8px}
+.navbtn{padding:10px 16px;margin:10px;border:none;border-radius:8px;cursor:pointer}
+@media(max-width:900px){.layout{flex-direction:column} .sidebar{width:auto;height:260px}}
+</style>
+</head>
+<body>
+<header>
+<h1>American Fighter Jet Wiki</h1>
+<input id="search" placeholder="Search aircraft...">
+</header>
+
+<div class="layout">
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+<div class="card" id="article">
+<h2>Welcome Pilot</h2>
+<p>Select an aircraft from the left menu to begin exploring.</p>
+</div>
+</div>
+</div>
+
+<script>
+const jets=[{
+name: "Bell P-59",
+image: "images/bell_p-59.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed F-80",
+image: "images/lockheed_f-80.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "North American F-86",
+image: "images/north_american_f-86.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Republic F-84",
+image: "images/republic_f-84.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Grumman F9F",
+image: "images/grumman_f9f.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell F2H Banshee",
+image: "images/mcdonnell_f2h_banshee.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Douglas F3D",
+image: "images/douglas_f3d.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Northrop F-89",
+image: "images/northrop_f-89.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed F-94",
+image: "images/lockheed_f-94.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Vought F7U",
+image: "images/vought_f7u.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell F3H",
+image: "images/mcdonnell_f3h.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "North American FJ-3 Fury",
+image: "images/north_american_fj-3_fury.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "North American F-100",
+image: "images/north_american_f-100.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell F-101",
+image: "images/mcdonnell_f-101.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Convair F-102",
+image: "images/convair_f-102.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed F-104",
+image: "images/lockheed_f-104.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Republic F-105",
+image: "images/republic_f-105.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Convair F-106",
+image: "images/convair_f-106.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "North American F-107",
+image: "images/north_american_f-107.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Grumman F-11",
+image: "images/grumman_f-11.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Vought F-8",
+image: "images/vought_f-8.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Northrop F-5",
+image: "images/northrop_f-5.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell F-4",
+image: "images/mcdonnell_f-4.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "General Dynamics F-111",
+image: "images/general_dynamics_f-111.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Grumman F-14",
+image: "images/grumman_f-14.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell Douglas F-15",
+image: "images/mcdonnell_douglas_f-15.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "General Dynamics F-16",
+image: "images/general_dynamics_f-16.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Northrop YF-17",
+image: "images/northrop_yf-17.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell Douglas F/A-18",
+image: "images/mcdonnell_douglas_fa-18.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Boeing F/A-18",
+image: "images/boeing_fa-18.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed F-117",
+image: "images/lockheed_f-117.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "McDonnell Douglas F-15E Strike Eagle",
+image: "images/mcdonnell_douglas_f-15e_strike_eagle.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed YF-22",
+image: "images/lockheed_yf-22.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Northrop YF-23",
+image: "images/northrop_yf-23.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed F-22",
+image: "images/lockheed_f-22.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed Martin F-35A",
+image: "images/lockheed_martin_f-35a.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed Martin F-35B",
+image: "images/lockheed_martin_f-35b.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+},{
+name: "Lockheed Martin F-35C",
+image: "images/lockheed_martin_f-35c.jpg",
+facts: {
+manufacturer: "Edit Me",
+role: "Edit Me",
+status: "Edit Me"
+},
+content: `<p>Paragraph 1...</p><p>Paragraph 2...</p><p>Paragraph 3...</p><p>Paragraph 4...</p><p>Paragraph 5...</p><p>Paragraph 6...</p><p>Paragraph 7...</p><p>Paragraph 8...</p>`
+}];
+let current=0;
+
+function showJet(i){
+current=i;
+const j=jets[i];
+document.getElementById('article').innerHTML=`
+<h1>${j.name}</h1>
+<img class="hero" src="${j.image}" alt="${j.name}" onerror="this.alt='Add image file';">
+<div class="info">
+<div class="fact"><b>Manufacturer</b><br>${j.facts.manufacturer}</div>
+<div class="fact"><b>Role</b><br>${j.facts.role}</div>
+<div class="fact"><b>Status</b><br>${j.facts.status}</div>
+</div>
+${j.content}
+<div>
+<button class="navbtn" onclick="showJet(Math.max(0,current-1))">◀ Previous</button>
+<button class="navbtn" onclick="showJet(Math.min(jets.length-1,current+1))">Next ▶</button>
+</div>`;
+}
+
+function render(f=''){
+const sb=document.getElementById('sidebar');
+sb.innerHTML='';
+jets.forEach((j,i)=>{
+if(j.name.toLowerCase().includes(f.toLowerCase())){
+const b=document.createElement('button');
+b.className='jet';
+b.textContent=j.name;
+b.onclick=()=>showJet(i);
+sb.appendChild(b);
+}
+});
+}
+
+document.getElementById('search').addEventListener('input',e=>render(e.target.value));
+render();
+</script>
+</body>
+</html>
