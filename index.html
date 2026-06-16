@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>American Fighter Jet Wiki</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#001f4d;}
+header{background:#00163a;color:white;padding:15px;text-align:center;position:sticky;top:0;}
+#search{width:90%;max-width:600px;padding:10px;border-radius:8px;border:none;}
+.container{display:flex;height:calc(100vh - 90px);}
+.sidebar{width:280px;background:#002b66;overflow:auto;padding:10px;}
+.jet-btn{display:block;width:100%;margin:4px 0;padding:10px;border:none;border-radius:8px;text-align:left;cursor:pointer;}
+.content{flex:1;padding:20px;overflow:auto;}
+.article{background:white;border-radius:14px;padding:25px;box-shadow:0 4px 12px rgba(0,0,0,.25);}
+.article img{max-width:100%;max-height:450px;display:block;margin:auto;border-radius:10px;}
+@media(max-width:800px){
+.container{flex-direction:column;}
+.sidebar{width:auto;height:220px;}
+}
+</style>
+</head>
+<body>
+<header>
+<h1>American Fighter Jet Wiki</h1>
+<input id="search" placeholder="Search aircraft...">
+</header>
+
+<div class="container">
+<div class="sidebar" id="sidebar"></div>
+<div class="content">
+<div class="article" id="article">
+<h2>Welcome</h2>
+<p>Select an aircraft from the list.</p>
+</div>
+</div>
+</div>
+
+<script>
+const jets=[{name: "Bell P-59", image: "images/bell_p-59.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed F-80", image: "images/lockheed_f-80.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "North American F-86", image: "images/north_american_f-86.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Republic F-84", image: "images/republic_f-84.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Grumman F9F", image: "images/grumman_f9f.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell F-2 Banshee", image: "images/mcdonnell_f-2_banshee.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Douglas F3D", image: "images/douglas_f3d.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Northrop F-89", image: "images/northrop_f-89.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed F-94", image: "images/lockheed_f-94.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Vought F7U", image: "images/vought_f7u.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell F3H", image: "images/mcdonnell_f3h.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "North American F-3J Fury", image: "images/north_american_f-3j_fury.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "North American F-100", image: "images/north_american_f-100.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell F-101", image: "images/mcdonnell_f-101.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Convair F-102", image: "images/convair_f-102.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed F-104", image: "images/lockheed_f-104.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Republic F-105", image: "images/republic_f-105.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Convair F106", image: "images/convair_f106.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "North American F-107", image: "images/north_american_f-107.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Grumman F-11", image: "images/grumman_f-11.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Vought F-8", image: "images/vought_f-8.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Northrop F-5", image: "images/northrop_f-5.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell F-4", image: "images/mcdonnell_f-4.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "General Dynamics F-111", image: "images/general_dynamics_f-111.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Grumman F-14", image: "images/grumman_f-14.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell Douglas F-15", image: "images/mcdonnell_douglas_f-15.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "General Dynamics F-16", image: "images/general_dynamics_f-16.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Northrop YF-17", image: "images/northrop_yf-17.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell Douglas F-18", image: "images/mcdonnell_douglas_f-18.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Boeing F-18", image: "images/boeing_f-18.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed F-117", image: "images/lockheed_f-117.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "McDonnell Douglas F-15 Strike Eagle", image: "images/mcdonnell_douglas_f-15_strike_eagle.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed YF-22", image: "images/lockheed_yf-22.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Northrop YF-23", image: "images/northrop_yf-23.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed F-22", image: "images/lockheed_f-22.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed Martin F-35A", image: "images/lockheed_martin_f-35a.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed Martin F-35B", image: "images/lockheed_martin_f-35b.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"},
+{name: "Lockheed Martin F-35C", image: "images/lockheed_martin_f-35c.jpg", content: "<p>Paste paragraph 1 here.</p><p>Paste paragraph 2 here.</p><p>Paste paragraph 3 here.</p><p>Paste paragraph 4 here.</p><p>Paste paragraph 5 here.</p><p>Paste paragraph 6 here.</p><p>Paste paragraph 7 here.</p><p>Paste paragraph 8 here.</p>"}];
+
+const sidebar=document.getElementById("sidebar");
+const article=document.getElementById("article");
+
+function showJet(j){
+article.innerHTML=`<h1>${j.name}</h1>
+<img src="${j.image}" alt="${j.name}" onerror="this.style.display='none'">
+${j.content}`;
+}
+
+function render(filter=""){
+sidebar.innerHTML="";
+jets.filter(j=>j.name.toLowerCase().includes(filter.toLowerCase()))
+.forEach(j=>{
+const b=document.createElement("button");
+b.className="jet-btn";
+b.textContent=j.name;
+b.onclick=()=>showJet(j);
+sidebar.appendChild(b);
+});
+}
+
+document.getElementById("search").addEventListener("input",e=>render(e.target.value));
+render();
+</script>
+</body>
+</html>
